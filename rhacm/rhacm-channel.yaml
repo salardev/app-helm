@@ -1,0 +1,27 @@
+# Create a Namespace to hold the Channel "dev"
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hello-helm
+spec:
+---
+# Create a Channel that declares resources that can be deployed
+# Channel can be a Namespace, Object Store Bucket, or Helm Repo
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: nexus-charts
+  namespace: hello-helm
+spec:
+  type: HelmRepo
+  pathname: # give the URL to the chart https://nexus-vodafone-cicd.apps.demo-app-cluster.walkersdev.co.uk/repository/helm-charts/
+  configRef:
+    name: insecure-skip-verify
+---
+apiVersion: v1
+data:
+  insecureSkipVerify: 'true'
+kind: ConfigMap
+metadata:
+  name: insecure-skip-verify
+  namespace: hello-helm
